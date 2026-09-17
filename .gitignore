@@ -1,0 +1,10 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary test wrappers used for screenshots
+_*.html
+
+# Editor
+.vscode/
+.idea/
