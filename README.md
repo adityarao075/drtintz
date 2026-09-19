@@ -21,15 +21,15 @@ then visit http://localhost:8000.
 | `contact.html` | Contact info, map, quote form |
 | `privacy-policy.html`, `terms-and-conditions.html` | Legal pages |
 | `css/styles.css` | All styles (design tokens at the top under `:root`) |
-| `js/main.js` | Mobile nav, headline animation, scroll reveals, counters, FAQ accordion, contact form |
+| `js/main.js` | Mobile nav, dropdowns, Inquire modal, headline animation, scroll reveals, counters, FAQ accordion, form delivery |
 | `assets/img/` | Photos and logo |
 
 ## Things to update before launch
 
 - **Stats banner** (`index.html`, `data-count` attributes): years of experience, review count, vehicles tinted, training hours are placeholders.
-- **Contact form**: currently opens the visitor's email app with a pre-filled message. To receive submissions in an inbox, add `action="https://formspree.io/f/YOUR_ID" method="POST"` (or any form endpoint) to the `<form>` in `contact.html`; the JS fallback steps aside automatically.
+- **Forms**: the Inquire modal and the contact page form post to FormSubmit (`https://formsubmit.co/doctortintz@gmail.com`), which relays each submission to that inbox. The very first submission triggers a one-time activation email to doctortintz@gmail.com; click the link in it once and all later submissions arrive normally. Submissions are sent in the background with a success message shown on the page; if JavaScript is off, the form posts normally and FormSubmit shows its own thank-you page.
 - **Locations dropdown**: Atlanta (1996 Dekalb Ave NE, 30307) and Marietta (1905 Airport Industrial Park Dr SE, Suite A, 30060). The Marietta address came from public directory listings; confirm it.
-- **Inquire**: the nav button opens a modal form (name, email, phone, service type, message). It uses the same mailto fallback as the contact page; set an `action` on the form to post to a real endpoint.
+- **Inquire**: the nav button opens a modal form (name, email, phone, service type, message). See **Forms** above for delivery.
 - **Legal pages**: the privacy policy and terms are generic starting points and should be reviewed before publishing.
 
 ## Brand

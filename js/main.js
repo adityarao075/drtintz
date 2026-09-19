@@ -176,29 +176,49 @@
     });
   });
 
-  /* Inquiry forms: mailto fallback (set a real action to post instead) --- */
+  /* Inquiry forms: send to the inbox via FormSubmit without leaving the page */
   document.querySelectorAll('form.js-inquiry').forEach(function (form) {
+    var status = form.querySelector('.form__status');
+    var button = form.querySelector('button[type="submit"]');
+    var buttonText = button ? button.textContent : '';
+    var to = form.getAttribute('data-to') || 'doctortintz@gmail.com';
+
+    function show(msg, isError) {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.add('is-visible');
+      status.classList.toggle('is-error', !!isError);
+    }
+
     form.addEventListener('submit', function (e) {
-      if (form.getAttribute('action')) return; // real endpoint configured
+      var action = form.getAttribute('action');
+      if (!action) return; // nothing configured; let the browser handle it
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (form.querySelector('[name="_honey"]') && form.querySelector('[name="_honey"]').value) return; // bot
+
       var data = new FormData(form);
-      var subject = 'Inquiry: ' + (data.get('service') || 'General') + ' — ' + (data.get('name') || '');
-      var body = [
-        'Name: ' + (data.get('name') || ''),
-        'Email: ' + (data.get('email') || ''),
-        'Phone: ' + (data.get('phone') || ''),
-        'Service: ' + (data.get('service') || ''),
-        '',
-        data.get('message') || ''
-      ].join('\n');
-      var to = form.getAttribute('data-to') || 'info@doctortintz.com';
-      window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      var status = form.querySelector('.form__status');
-      if (status) {
-        status.textContent = 'Opening your email app… If nothing happens, email us directly at ' + to + '.';
-        status.classList.add('is-visible');
-      }
+      data.set('_subject', 'New inquiry: ' + (data.get('service') || 'General') + ' — ' + (data.get('name') || ''));
+      if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+
+      // Same endpoint, AJAX flavour: returns JSON instead of redirecting.
+      var ajaxUrl = action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      fetch(ajaxUrl, { method: 'POST', headers: { 'Accept': 'application/json' }, body: data })
+        .then(function (res) { return res.json().then(function (json) { return { ok: res.ok, json: json }; }); })
+        .then(function (r) {
+          var success = r.ok && (r.json.success === 'true' || r.json.success === true);
+          if (!success) throw new Error(r.json.message || 'Send failed');
+          form.reset();
+          show('Thanks! Your inquiry was sent. We’ll get back to you within one business day.');
+        })
+        .catch(function () {
+          // Network or endpoint problem: fall back to a normal form post, then to email.
+          try { form.submit(); }
+          catch (err) { show('We couldn’t send that automatically. Please email us at ' + to + '.', true); }
+        })
+        .finally(function () {
+          if (button) { button.disabled = false; button.textContent = buttonText; }
+        });
     });
   });
 
