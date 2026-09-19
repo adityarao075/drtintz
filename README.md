@@ -30,7 +30,7 @@ then visit http://localhost:8000.
 - **Forms**: the Inquire modal and the contact page form post to FormSubmit (`https://formsubmit.co/doctortintz@gmail.com`), which relays each submission to that inbox. The very first submission triggers a one-time activation email to doctortintz@gmail.com; click the link in it once and all later submissions arrive normally. Submissions are sent in the background with a success message shown on the page; if JavaScript is off, the form posts normally and FormSubmit shows its own thank-you page.
 - **Locations dropdown**: Atlanta (1996 Dekalb Ave NE, 30307) and Marietta (1905 Airport Industrial Park Dr SE, Suite A, 30060). The Marietta address came from public directory listings; confirm it.
 - **Inquire**: the nav button opens a modal form (name, email, phone, service type, message). See **Forms** above for delivery.
-- **Legal pages**: the privacy policy and terms are generic starting points and should be reviewed before publishing.
+- **Legal pages**: privacy policy and terms are the business's own text (Tanked Tinterz LLC, last updated February 25, 2026).
 
 ## Brand
 
