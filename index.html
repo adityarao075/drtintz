@@ -381,21 +381,21 @@
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
         <div class="form__row">
           <div class="field">
-            <label for="inq-name">Name</label>
+            <label for="inq-name">Name <span class="req" aria-hidden="true">*</span></label>
             <input id="inq-name" name="name" type="text" autocomplete="name" placeholder="Your name" required>
           </div>
           <div class="field">
-            <label for="inq-email">Email</label>
+            <label for="inq-email">Email <span class="req" aria-hidden="true">*</span></label>
             <input id="inq-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
           </div>
         </div>
         <div class="form__row">
           <div class="field">
-            <label for="inq-phone">Phone number</label>
+            <label for="inq-phone">Phone number <span class="req" aria-hidden="true">*</span></label>
             <input id="inq-phone" name="phone" type="tel" autocomplete="tel" placeholder="(404) 000-0000" required>
           </div>
           <div class="field">
-            <label for="inq-service">Service type</label>
+            <label for="inq-service">Service type <span class="req" aria-hidden="true">*</span></label>
             <select id="inq-service" name="service" required>
               <option value="" selected disabled>Select...</option>
                     <option>Automotive Tint</option>
@@ -408,11 +408,12 @@
           </div>
         </div>
         <div class="field">
-          <label for="inq-message">Message</label>
+          <label for="inq-message">Message <span class="req" aria-hidden="true">*</span></label>
           <textarea id="inq-message" name="message" placeholder="Year, make, model, and what you're looking for." required></textarea>
         </div>
         <button class="btn btn--block" type="submit">Send inquiry</button>
         <p class="form__status" role="status" aria-live="polite"></p>
+        <p class="form__note">All fields are required.</p>
       </form>
     </div>
   </div>
