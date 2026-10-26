@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js): Google Ads + GA4, cross-domain linked to the booking site -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11164100481"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('set', 'linker', {'domains': ['doctortintz.com', 'bookdoctortintz.com']});
+    gtag('config', 'AW-11164100481');
+    gtag('config', 'G-PP5F7V0860');
+  </script>
   <title>Privacy Policy | Doctor Tintz</title>
   <meta name="description" content="How Doctor Tintz collects, uses, and protects your information.">
   <meta name="robots" content="noindex">
@@ -199,6 +209,7 @@
       <p class="modal__sub">Tell us about your vehicle or project and we'll get back to you with a recommendation.</p>
       <form class="form form--modal js-inquiry" data-to="doctortintz@gmail.com" novalidate action="https://formsubmit.co/doctortintz@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="New inquiry from doctortintz.com">
+<input type="hidden" name="_next" value="https://www.doctortintz.com/thank-you.html">
         <input type="hidden" name="_template" value="table">
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
         <div class="form__row">

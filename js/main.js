@@ -209,6 +209,9 @@
           var success = r.ok && (r.json.success === 'true' || r.json.success === true);
           if (!success) throw new Error(r.json.message || 'Send failed');
           form.reset();
+          // Land on the thank-you page (same URL FormSubmit uses via _next) so Google Ads can count the submission.
+          var next = form.querySelector('[name="_next"]');
+          if (next && next.value) { window.location.assign(next.value); return; }
           show('Thanks! Your inquiry was sent. We’ll get back to you within one business day.');
         })
         .catch(function () {

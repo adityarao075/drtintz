@@ -19,6 +19,7 @@ then visit http://localhost:8000.
 | `index.html` | Home: hero, stats, services, testimonial, FAQ, CTA |
 | `about.html` | Founders, story, shop |
 | `contact.html` | Contact info, map, quote form |
+| `thank-you.html` | Landing page after a quote form is sent (Google Ads counts conversions here) |
 | `privacy-policy.html`, `terms-and-conditions.html` | Legal pages |
 | `css/styles.css` | All styles (design tokens at the top under `:root`) |
 | `js/main.js` | Mobile nav, dropdowns, Inquire modal, headline animation, scroll reveals, counters, FAQ accordion, form delivery |
@@ -27,7 +28,8 @@ then visit http://localhost:8000.
 ## Things to update before launch
 
 - **Stats banner** (`index.html`, `data-count` attributes): years of experience, review count, vehicles tinted, training hours are placeholders.
-- **Forms**: the Inquire modal and the contact page form post to FormSubmit (`https://formsubmit.co/doctortintz@gmail.com`), which relays each submission to that inbox. The very first submission triggers a one-time activation email to doctortintz@gmail.com; click the link in it once and all later submissions arrive normally. Submissions are sent in the background with a success message shown on the page; if JavaScript is off, the form posts normally and FormSubmit shows its own thank-you page.
+- **Forms**: the Inquire modal and the contact page form post to FormSubmit (`https://formsubmit.co/doctortintz@gmail.com`), which relays each submission to that inbox. The very first submission triggers a one-time activation email to doctortintz@gmail.com; click the link in it once and all later submissions arrive normally. Submissions are sent in the background and the visitor is then taken to `thank-you.html`; if JavaScript is off, the form posts normally and FormSubmit redirects to the same page via the hidden `_next` field.
+- **Google tag**: every page's `<head>` carries the gtag.js snippet (Google Ads `AW-11164100481`, GA4 `G-PP5F7V0860`) with a cross-domain linker for `bookdoctortintz.com`. Keep every Book Appointment button a plain `<a href="https://bookdoctortintz.com">` link; pop-ups or scripted buttons break the booking attribution. The booking site must carry the matching linker line.
 - **Locations dropdown**: Atlanta (1996 Dekalb Ave NE, 30307) and Marietta (1905 Airport Industrial Park Dr SE, Suite A, 30060). The Marietta address came from public directory listings; confirm it.
 - **Inquire**: the nav button opens a modal form (name, email, phone, service type, message). See **Forms** above for delivery.
 - **Legal pages**: privacy policy and terms are the business's own text (Tanked Tinterz LLC, last updated February 25, 2026).

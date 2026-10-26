@@ -502,3 +502,9 @@ a.info-card:hover { transform: translateY(-3px); border-color: var(--accent); }
   .reveal { opacity: 1; transform: none; }
   .hero__title .char { opacity: 1; transform: none; }
 }
+
+/* Thank-you page ------------------------------------------------------- */
+.thank-you { text-align: center; }
+.thank-you__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 28px; }
+.prose .thank-you__actions .btn { color: #000; }
+.prose .thank-you__actions .btn--ghost { color: var(--ink); }
