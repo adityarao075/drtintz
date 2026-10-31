@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Build the gallery from original photos/videos.
+
+Drop originals into gallery-src/<category>/ where category is one of
+tint, wraps, ppf, detailing (that folder is git-ignored). Then run:
+
+    python scripts/build-gallery.py
+
+It writes web-sized copies to assets/gallery/<category>/ and the item list
+to js/gallery-data.js, which gallery.html renders. Re-run after adding or
+removing files; outputs that are already up to date are skipped.
+"""
+import io
+import json
+import re
+import subprocess
+from pathlib import Path
+
+from PIL import Image, ImageOps
+
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT / 'gallery-src'
+OUT = ROOT / 'assets' / 'gallery'
+DATA = ROOT / 'js' / 'gallery-data.js'
+CATS = ['tint', 'wraps', 'ppf', 'detailing']
+IMG_EXT = {'.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'}
+VID_EXT = {'.mp4', '.mov', '.m4v', '.webm'}
+FULL_W, THUMB_W = 1600, 720
+VIDEO_MAX = 1280  # longest side in pixels
+
+
+def slug(name):
+    s = re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+    return s or 'item'
+
+
+def newer(dst, src):
+    return dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime
+
+
+def save_webp(im, dst, width, quality):
+    im = im.copy()
+    if im.width > width:
+        im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
+    im.save(dst, 'WEBP', quality=quality, method=6)
+    return im.size
+
+
+def ffmpeg_png(args):
+    """Run ffmpeg with the given input args and return one PNG frame as bytes."""
+    cmd = ['ffmpeg', '-v', 'error'] + args + ['-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'png', '-']
+    return subprocess.run(cmd, capture_output=True).stdout
+
+
+def open_image(path):
+    try:
+        im = Image.open(path)
+        im.load()
+    except Exception:
+        # HEIC and friends: let ffmpeg decode a frame
+        im = Image.open(io.BytesIO(ffmpeg_png(['-i', str(path)])))
+    im = ImageOps.exif_transpose(im)
+    return im.convert('RGB')
+
+
+def probe(path):
+    out = subprocess.run(
+        ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries',
+         'stream=width,height,duration:stream_tags=rotate:stream_side_data=rotation',
+         '-of', 'json', str(path)], capture_output=True, text=True, check=True).stdout
+    st = json.loads(out)['streams'][0]
+    w, h = int(st['width']), int(st['height'])
+    rot = 0
+    for sd in st.get('side_data_list', []) or []:
+        rot = int(abs(float(sd.get('rotation', 0)))) or rot
+    rot = int(float(st.get('tags', {}).get('rotate', rot) or rot))
+    if rot in (90, 270):
+        w, h = h, w
+    return w, h, float(st.get('duration') or 0)
+
+
+def build_image(src, out_dir, base, cat):
+    full, thumb = out_dir / f'{base}.webp', out_dir / f'{base}-thumb.webp'
+    if not (newer(full, src) and newer(thumb, src)):
+        im = open_image(src)
+        save_webp(im, full, FULL_W, 82)
+        save_webp(im, thumb, THUMB_W, 78)
+        print('image ', cat, src.name)
+    with Image.open(full) as im:
+        w, h = im.size
+    return {'cat': cat, 'type': 'image', 'src': f'assets/gallery/{cat}/{full.name}',
+            'thumb': f'assets/gallery/{cat}/{thumb.name}', 'w': w, 'h': h}
+
+
+def build_video(src, out_dir, base, cat):
+    mp4, poster = out_dir / f'{base}.mp4', out_dir / f'{base}-poster.webp'
+    if not (newer(mp4, src) and newer(poster, src)):
+        scale = (f"scale='if(gt(iw,ih),min({VIDEO_MAX},iw),-2)':"
+                 f"'if(gt(iw,ih),-2,min({VIDEO_MAX},ih))'")
+        subprocess.run(
+            ['ffmpeg', '-v', 'error', '-y', '-i', str(src), '-vf', scale,
+             '-c:v', 'libx264', '-preset', 'slow', '-crf', '27', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
+             '-c:a', 'aac', '-b:a', '96k', '-ac', '2', '-movflags', '+faststart', str(mp4)], check=True)
+        png = ffmpeg_png(['-ss', '1', '-i', str(mp4)]) or ffmpeg_png(['-i', str(mp4)])
+        save_webp(Image.open(io.BytesIO(png)).convert('RGB'), poster, THUMB_W, 78)
+        print('video ', cat, src.name)
+    w, h, dur = probe(mp4)
+    return {'cat': cat, 'type': 'video', 'src': f'assets/gallery/{cat}/{mp4.name}',
+            'thumb': f'assets/gallery/{cat}/{poster.name}', 'w': w, 'h': h, 'dur': round(dur)}
+
+
+def build():
+    items = []
+    for cat in CATS:
+        src_dir, out_dir = SRC / cat, OUT / cat
+        out_dir.mkdir(parents=True, exist_ok=True)
+        if not src_dir.exists():
+            continue
+        for src in sorted(src_dir.iterdir()):
+            ext = src.suffix.lower()
+            base = slug(src.stem)
+            if ext in IMG_EXT:
+                items.append(build_image(src, out_dir, base, cat))
+            elif ext in VID_EXT:
+                items.append(build_video(src, out_dir, base, cat))
+    # Drop outputs whose source is gone
+    keep = {ROOT / i['src'] for i in items} | {ROOT / i['thumb'] for i in items}
+    for f in OUT.rglob('*'):
+        if f.is_file() and f not in keep:
+            f.unlink()
+            print('removed', f.relative_to(ROOT))
+    DATA.write_text('/* Generated by scripts/build-gallery.py. Do not edit by hand. */\n'
+                    'window.GALLERY_ITEMS = ' + json.dumps(items, separators=(',', ':')) + ';\n',
+                    encoding='utf-8')
+    counts = {c: sum(1 for i in items if i['cat'] == c) for c in CATS}
+    print(f'{len(items)} items -> {DATA.relative_to(ROOT)}', counts)
+
+
+if __name__ == '__main__':
+    build()

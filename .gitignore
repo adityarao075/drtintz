@@ -8,3 +8,9 @@ _*.html
 # Editor
 .vscode/
 .idea/
+
+.vercel
+.env*
+
+# Original gallery photos/videos (large); web copies live in assets/gallery
+gallery-src/
