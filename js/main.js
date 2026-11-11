@@ -198,7 +198,8 @@
       if (form.querySelector('[name="_honey"]') && form.querySelector('[name="_honey"]').value) return; // bot
 
       var data = new FormData(form);
-      data.set('_subject', 'New inquiry: ' + (data.get('service') || 'General') + ' — ' + (data.get('name') || ''));
+      var subject = form.getAttribute('data-subject') || ('New inquiry: ' + (data.get('service') || 'General'));
+      data.set('_subject', subject + ' — ' + (data.get('name') || ''));
       if (button) { button.disabled = true; button.textContent = 'Sending…'; }
 
       // Same endpoint, AJAX flavour: returns JSON instead of redirecting.

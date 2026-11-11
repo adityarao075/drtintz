@@ -642,3 +642,20 @@ a.info-card:hover { transform: translateY(-3px); border-color: var(--accent); }
 .offers__note { margin: 28px auto 0; max-width: 760px; text-align: center; font-size: 14px; line-height: 1.6; color: var(--ink-3); }
 @media (max-width: 860px) { .offers { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .btn--xl { padding: 8px 8px 8px 28px; gap: 16px; } .btn--xl .btn__arrow { width: 52px; height: 52px; } .book-hero__points { gap: 8px 16px; font-size: 14px; } }
+
+/* Partnership ------------------------------------------------------------- */
+.partner-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 4vw, 64px); align-items: start; }
+.partner-side__title { font-size: 22px; margin-bottom: 16px; }
+.partner-side__title + .partner-side__title, .partner-list + .partner-side__title { margin-top: 32px; }
+.partner-steps { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 16px; }
+.partner-steps li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; }
+.partner-steps span { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #000; font-weight: 700; font-size: 14px; }
+.partner-steps strong { display: block; font-size: 16px; margin: 6px 0 4px; }
+.partner-steps div { font-size: 15px; line-height: 1.55; color: var(--ink-3); }
+.partner-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 15px; font-weight: 500; }
+.partner-list li { display: flex; align-items: center; gap: 10px; }
+.partner-list svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
+.partner-side__note { margin-top: 28px; font-size: 14px; line-height: 1.6; color: var(--ink-3); }
+.partner-side__note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.partner-form { min-width: 0; }
+@media (max-width: 900px) { .partner-grid { grid-template-columns: 1fr; } .partner-side { order: 2; } }
