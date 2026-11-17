@@ -23,6 +23,7 @@ then visit http://localhost:8000.
 | `book.html` (`/book`) | Google Ads sitelink page: one big plain-link Book Now button to bookdoctortintz.com |
 | `fall-special.html` (`/fall-special`) | Google Ads sitelink page: $300 ceramic tint + 25% off detailing, plain links into the booking promo flow |
 | `vercel.json` | Rewrites so `/book`, `/fall-special`, `/gallery` and `/thank-you` serve without `.html` (no redirects, so ad click IDs survive) |
+| `winter-special.html` (`/winter-special`) | Winter Special: $350 ceramic tint + 25% off detailing, Dec 2, 2026 to Jan 31, 2027. `/fall-special` redirects here from Dec 2 via a small dated script in its head |
 | `partnership.html` (`/partnership`) | Partner program page with an application form (FormSubmit to doctortintz@gmail.com) |
 | `gallery.html` | Our Work gallery with Tint / Wraps / PPF / Detailing tabs and a lightbox (`js/gallery.js`, data in `js/gallery-data.js`) |
 | `privacy-policy.html`, `terms-and-conditions.html` | Legal pages |

@@ -659,3 +659,5 @@ a.info-card:hover { transform: translateY(-3px); border-color: var(--accent); }
 .partner-side__note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .partner-form { min-width: 0; }
 @media (max-width: 900px) { .partner-grid { grid-template-columns: 1fr; } .partner-side { order: 2; } }
+
+.offers__fine { list-style: disc; margin: 14px auto 0; padding-left: 20px; max-width: 720px; font-size: 13px; line-height: 1.6; color: var(--ink-3); display: grid; gap: 4px; }

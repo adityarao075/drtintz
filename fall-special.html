@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- From December 2, 2026 (Eastern) this page hands off to the Winter Special, keeping any ad parameters -->
+  <script>
+    (function () {
+      try {
+        var t = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+        if (t >= '2026-12-02') location.replace('/winter-special' + location.search);
+      } catch (e) {}
+    })();
+  </script>
   <!-- Google tag (gtag.js): Google Ads + GA4, cross-domain linked to the booking site -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11164100481"></script>
   <script>
@@ -18,7 +27,7 @@
     gtag('config', 'G-PP5F7V0860');
   </script>
   <title>Fall Special: $300 Ceramic Tint + 25% Off Detailing | Doctor Tintz</title>
-  <meta name="description" content="Fall Special at Doctor Tintz: $300 ceramic window tint on 4 side windows plus the rear windshield, any vehicle, lifetime warranty. Plus 25% off all detailing. Valid through December 10, 2026.">
+  <meta name="description" content="Fall Special at Doctor Tintz: $300 ceramic window tint on 4 side windows plus the rear windshield, any vehicle, lifetime warranty. Plus 25% off all detailing. Valid through December 1, 2026.">
   <meta name="theme-color" content="#000000">
   <link rel="icon" href="assets/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -89,7 +98,7 @@
   <main>
     <section class="page-hero">
       <div class="container">
-        <span class="eyebrow">Fall Special &middot; Ends Dec 10, 2026</span>
+        <span class="eyebrow">Fall Special &middot; Ends Dec 1, 2026</span>
         <h1 class="h1">Two Ways to Save This Fall</h1>
         <p class="lead">Book online in about 60 seconds. The discount is applied automatically at checkout, no code needed.</p>
       </div>
@@ -127,7 +136,7 @@
             </a>
           </article>
         </div>
-        <p class="offers__note">Valid through December 10, 2026. Discounts apply automatically at checkout through the links above, at our Atlanta and Marietta shops.</p>
+        <p class="offers__note">Valid through December 1, 2026. Discounts apply automatically at checkout through the links above, at our Atlanta and Marietta shops.</p>
       </div>
     </section>
   </main>

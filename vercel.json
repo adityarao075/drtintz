@@ -3,6 +3,7 @@
     { "source": "/book", "destination": "/book.html" },
     { "source": "/partnership", "destination": "/partnership.html" },
     { "source": "/fall-special", "destination": "/fall-special.html" },
+    { "source": "/winter-special", "destination": "/winter-special.html" },
     { "source": "/gallery", "destination": "/gallery.html" },
     { "source": "/thank-you", "destination": "/thank-you.html" }
   ]
